@@ -41,29 +41,25 @@ public class CourseController {
 	}
 
 	@GetMapping("/{id}")
-	public Optional<Course> findById(@PathVariable @NotNull @Positive Long id) {
+	public Course findById(@PathVariable @NotNull @Positive Long id) {
 		return courseService.findById(id);
 	}
 
-	@ResponseStatus(code = HttpStatus.CREATED)
 	@PostMapping()
+	@ResponseStatus(code = HttpStatus.CREATED)
 	public Course create(@RequestBody @Valid Course course) {
 		return courseService.create(course);
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<Course> update(@PathVariable @NotNull @Positive Long id, @RequestBody @Valid Course course) {
-		return courseService.update(id, course).map(recordFound -> {
-			return ResponseEntity.ok().body(recordFound);
-		}).orElse(ResponseEntity.notFound().build());
+	@ResponseStatus(code = HttpStatus.CREATED)
+	public Course update(@PathVariable @NotNull @Positive Long id, @RequestBody @Valid Course course) {
+		return courseService.update(id, course);
 	}
 
 	@DeleteMapping("/{id}")
 	@ResponseStatus(code = HttpStatus.NO_CONTENT)
-	public ResponseEntity<Void> delete(@PathVariable @NotNull @Positive Long id) {
-		if (courseService.delete(id)) {
-			return ResponseEntity.noContent().<Void>build();
-		}
-		return ResponseEntity.notFound().build();
+	public void delete(@PathVariable @NotNull @Positive Long id) {
+		courseService.delete(id);
 	}
 }
