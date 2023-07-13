@@ -36,7 +36,7 @@ public class CourseService {
 				.collect(Collectors.toList());
 	}
 	
-	public CourseDTO findById(@PathVariable @NotNull @Positive Long id) {
+	public CourseDTO findById(@NotNull @Positive Long id) {
 		return courseRepository.findById(id).map(courseMapper::toDTO)
 				.orElseThrow(()-> new RecordNotFoundException(id));
 	}
@@ -45,12 +45,14 @@ public class CourseService {
 		return courseMapper.toDTO(courseRepository.save(courseMapper.toEntity(course)));
 	}
 	
-	public CourseDTO update(@PathVariable @NotNull @Positive Long id, @RequestBody @Valid Course course) {
-		return courseRepository.findById(id).map(recordFound -> {
-			recordFound.setName(course.getName());
-			recordFound.setCategory(course.getCategory());
-			return courseRepository.save(recordFound);
-		}).map(courseMapper::toDTO).orElseThrow(()-> new RecordNotFoundException(id));
+	public CourseDTO update(@PathVariable @NotNull @Positive Long id, @RequestBody @Valid CourseDTO courseDTO) {
+		return courseRepository.findById(id)
+			.map(recordFound -> {
+			Course course = courseMapper.toEntity(courseDTO);
+			recordFound.setName(courseDTO.name());
+			recordFound.setCategory(courseMapper.convertCategoryValue(courseDTO.category()));
+			return courseMapper.toDTO(courseRepository.save(recordFound));
+		}).orElseThrow(()-> new RecordNotFoundException(id));
 	}
 	
 	public void delete(@PathVariable @NotNull @Positive Long id) {

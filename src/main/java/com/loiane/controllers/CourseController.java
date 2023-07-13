@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.loiane.dto.CourseDTO;
-import com.loiane.model.Course;
 import com.loiane.service.CourseService;
 
 @Validated
@@ -52,8 +51,8 @@ public class CourseController {
 
 	@PutMapping("/{id}")
 	@ResponseStatus(code = HttpStatus.CREATED)
-	public CourseDTO update(@PathVariable @NotNull @Positive Long id, @RequestBody @Valid Course course) {
-		return courseService.update(id, course);
+	public CourseDTO update(@PathVariable @NotNull @Positive Long id, @RequestBody @Valid CourseDTO courseDTO) {
+		return courseService.update(id, courseDTO);
 	}
 
 	@DeleteMapping("/{id}")
