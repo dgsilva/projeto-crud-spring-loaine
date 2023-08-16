@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 
 import com.loiane.enums.Category;
 import com.loiane.model.Course;
+import com.loiane.model.Lesson;
 import com.loiane.repository.CourseRepository;
 
 @SpringBootApplication
@@ -23,6 +24,18 @@ public class CrudSpringApplication {
 			Course c = new Course();
 			c.setName("Angular com Spring");
 			c.setCategory(Category.FRONTEND);
+			
+			Lesson l = new Lesson();
+			l.setName("Introdução");
+			l.setYoutubeUrl("watch?v=1");
+			l.setCourse(c);
+			c.getLessons().add(l);
+			
+			Lesson l1 = new Lesson();
+			l1.setName("Angular");
+			l1.setYoutubeUrl("watch?v=2");
+			l1.setCourse(c);
+			c.getLessons().add(l1);
 			courseRepository.save(c);
 			
 		};
